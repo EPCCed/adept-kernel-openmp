@@ -45,6 +45,7 @@ int main(int argc, char **argv){
   unsigned long rep = 1;
   char *op  = "dot_product";
   char *dt = "double";
+  char *algo = "normal";
 
   static struct option option_list[] =
     { {"bench", required_argument, NULL, 'b'},
@@ -52,11 +53,12 @@ int main(int argc, char **argv){
       {"reps", required_argument, NULL, 'r'},
       {"op", required_argument, NULL, 'o'},
       {"dtype", required_argument, NULL, 'd'},
+      {"algo", required_argument, NULL, 'a'},
       {"help", no_argument, NULL, 'h'},
       {0, 0, 0, 0}
     };
 
-  while((c = getopt_long(argc, argv, "b:s:r:o:d:h", option_list, NULL)) != -1){
+  while((c = getopt_long(argc, argv, "b:s:r:o:d:a:h", option_list, NULL)) != -1){
     switch(c){
     case 'b':
       bench = optarg;
@@ -78,6 +80,10 @@ int main(int argc, char **argv){
       dt = optarg;
       printf("Data type is %s\n", dt);
       break;
+    case 'a':
+      algo = optarg;
+      printf("Algorithm is %s\n", algo);
+      break;
     case 'h':
       usage();
       return 0;
@@ -87,7 +93,7 @@ int main(int argc, char **argv){
     }
   }
 
-  bench_level1(bench, size, rep, op, dt);
+  bench_level1(bench, size, rep, op, dt, algo);
 
   return 0;
 
@@ -113,6 +119,8 @@ void usage(){
   printf("\t -d, --dtype DATATYPE \t DATATYPE to be used for the BLAS benchmarks. Default is double.\n"
 		 "\t\t\t\t --> for norm, dot_product, scalar_product, axpy and dmv possible values are int, float, double.\n"
 		 "\t\t\t\t --> for spmv and spgemm possible values are float, double.\n");
+  printf("\t -a, --algo ALGORITHM \t ALGORITHM to be used. Default is normal.\n"
+	         "\t\t\t\t --> for cg possible values are normal, mixed.\n");
   printf("\t -h, --help \t\t Displays this help.\n");
   printf("\n\n");
 

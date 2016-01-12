@@ -27,7 +27,7 @@
 
 /* Level 1 benchmark driver - calls appropriate function */
 /* based on command line arguments.                      */
-void bench_level1(char *b, unsigned int s, unsigned long r, char *o, char *dt ){
+void bench_level1(char *b, unsigned int s, unsigned long r, char *o, char *dt, char *algo ){
 
   /* BLAS operations */
   if(strcmp(b, "blas_op") == 0){
@@ -126,7 +126,13 @@ void bench_level1(char *b, unsigned int s, unsigned long r, char *o, char *dt ){
   }
 
   else if (strcmp(b, "cg") == 0) {
-    conjugate_gradient(s);
+      if (strcmp(algo, "mixed") == 0) {
+	  conjugate_gradient_mixed(s);
+      }
+      else if (strcmp(algo, "normal") == 0) {
+	  conjugate_gradient(s);
+      }
+      else fprintf(stderr, "ERROR: check you are using a valid algorithm...\n");
   }
 
 
